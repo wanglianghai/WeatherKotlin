@@ -4,6 +4,11 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
+import com.bignerdranch.android.kotlinweather.net.ForecastRequest
+import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.async
+import org.jetbrains.anko.uiThread
 
 class MainActivity : AppCompatActivity() {
     private val items = listOf(
@@ -22,6 +27,13 @@ class MainActivity : AppCompatActivity() {
 
         val forecastList = findViewById(R.id.forecast_list) as RecyclerView
         forecastList.layoutManager = LinearLayoutManager(this)
-        forecastList.adapter = ForecastListAdapter(items)
+//        forecastList.adapter = ForecastListAdapter(items)
+
+        async {
+            val netResult = ForecastRequest("94043").execute()
+            uiThread {
+                text.text = netResult.toString()
+            }
+        }
      }
 }
