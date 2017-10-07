@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import com.bignerdranch.android.kotlinweather.domain.RequestForecastCommand
 import com.bignerdranch.android.kotlinweather.net.ForecastRequest
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.async
@@ -30,9 +31,9 @@ class MainActivity : AppCompatActivity() {
 //        forecastList.adapter = ForecastListAdapter(items)
 
         async {
-            val netResult = ForecastRequest("94043").execute()
+            val netResult = RequestForecastCommand("94043").execute()
             uiThread {
-                text.text = netResult.toString()
+                forecastList.adapter = ForecastListAdapter(netResult)
             }
         }
      }
