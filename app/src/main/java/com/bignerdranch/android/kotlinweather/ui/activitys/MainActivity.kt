@@ -1,18 +1,20 @@
-package com.bignerdranch.android.kotlinweather
+package com.bignerdranch.android.kotlinweather.ui.activitys
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import com.bignerdranch.android.kotlinweather.domain.RequestForecastCommand
-import com.bignerdranch.android.kotlinweather.net.ForecastRequest
+import com.bignerdranch.android.kotlinweather.ui.adapters.ForecastListAdapter
+import com.bignerdranch.android.kotlinweather.R
+import com.bignerdranch.android.kotlinweather.domain.Command.RequestForecastCommand
+import com.bignerdranch.android.kotlinweather.domain.model.Forecast
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.async
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 
 class MainActivity : AppCompatActivity() {
-    private val items = listOf(
+    private val items = listOf(         //listOf()创建集合
             "Mon 6/23 - Sunny - 31/17",
             "Tue 6/24 - Foggy - 21/8",
             "Wed 6/25 - Cloudy - 22/17",
@@ -26,14 +28,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val forecastList = findViewById(R.id.forecast_list) as RecyclerView
         forecastList.layoutManager = LinearLayoutManager(this)
 //        forecastList.adapter = ForecastListAdapter(items)
 
         async {
-            val netResult = RequestForecastCommand("94043").execute()
+            val result = RequestForecastCommand("94043").execute()
             uiThread {
-                forecastList.adapter = ForecastListAdapter(netResult)
+                forecastList.adapter = ForecastListAdapter(result){ toast(it.date) }
+
             }
         }
      }

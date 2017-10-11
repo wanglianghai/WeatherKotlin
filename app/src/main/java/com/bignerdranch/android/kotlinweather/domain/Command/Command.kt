@@ -1,4 +1,4 @@
-package com.bignerdranch.android.kotlinweather.domain
+package com.bignerdranch.android.kotlinweather.domain.Command
 
 /**
  * Created by Administrator on 2017/10/7/007.
