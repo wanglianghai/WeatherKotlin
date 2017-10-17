@@ -3,11 +3,9 @@ package com.bignerdranch.android.kotlinweather.ui.activitys
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import com.bignerdranch.android.kotlinweather.ui.adapters.ForecastListAdapter
 import com.bignerdranch.android.kotlinweather.R
 import com.bignerdranch.android.kotlinweather.domain.Command.RequestForecastCommand
-import com.bignerdranch.android.kotlinweather.domain.model.Forecast
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.async
 import org.jetbrains.anko.toast
@@ -32,9 +30,9 @@ class MainActivity : AppCompatActivity() {
 //        forecastList.adapter = ForecastListAdapter(items)
 
         async {
-            val result = RequestForecastCommand("94043").execute()
+            val result = RequestForecastCommand(94043).execute()
             uiThread {
-                forecastList.adapter = ForecastListAdapter(result){ toast(it.date) }
+                forecastList.adapter = ForecastListAdapter(result){ toast(it.description) }
 
             }
         }

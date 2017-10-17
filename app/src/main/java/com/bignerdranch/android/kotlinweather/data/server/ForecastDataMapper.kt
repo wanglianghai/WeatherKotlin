@@ -11,18 +11,18 @@ import java.util.*
 //把源数据转换成需要的数据
 class ForecastDataMapper {
     //返回需要的数据
-    fun convertFromDataModel(forecast: ForecastResult): ForecastList
-            = ForecastList(forecast.city.name, forecast.city.country, convertForecastListToDomain(forecast.list))
+    fun convertFromDataModel(zipCode: Long, forecast: ForecastResult): ForecastList
+            = ForecastList(zipCode, forecast.city.name, forecast.city.country, convertForecastListToDomain(forecast.list))
 
     //传入源list返回转换list
     private fun convertForecastListToDomain(list: List<Forecast>): List<ModelForecast>
             = list.map { convertForecastItemToDomain(it) } // 返回list
 
     //传入源数据Forecast 返回设置好需要的数据
-    private fun convertForecastItemToDomain(forecast: Forecast) : ModelForecast
-            = ModelForecast(convertDate(forecast.dt), forecast.weather[0].description,
-            forecast.temp.max.toInt(), forecast.temp.min.toInt(), generateIconUrl(forecast.weather[0].icon))
-
+    private fun convertForecastItemToDomain(forecast: Forecast) : ModelForecast = with(forecast) {
+        ModelForecast(dt, weather[0].description, temp.max.toInt(), temp.min.toInt(),
+                generateIconUrl(weather[0].icon))
+    }
     //传入时间Long返回需要的日期格式
     private fun convertDate(date: Long): String {
         val df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())

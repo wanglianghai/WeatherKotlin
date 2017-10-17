@@ -1,4 +1,4 @@
-package com.bignerdranch.android.kotlinweather.ui.utils
+package com.bignerdranch.android.kotlinweather.extensions
 
 import android.content.Context
 import android.view.View

@@ -3,11 +3,8 @@ package com.bignerdranch.android.kotlinweather.data.server
 import com.google.gson.Gson
 import java.net.URL
 
-/**
- * Created by Administrator on 2017/10/7/007.
- */
 //伴随类，返回原始数据
-class ForecastRequest(val zipCode: String) {
+class ForecastRequest(val zipCode: Long) {
     companion object {
         private val APP_ID = "15646a06818f61f7b8d7823ca833e1ce"
         private val URLs = "http://api.openweathermap.org/data/2.5/" +

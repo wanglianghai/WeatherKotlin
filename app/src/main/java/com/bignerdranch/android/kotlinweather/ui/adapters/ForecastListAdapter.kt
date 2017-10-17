@@ -4,15 +4,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.bignerdranch.android.kotlinweather.R
 import com.bignerdranch.android.kotlinweather.domain.model.Forecast
 import com.bignerdranch.android.kotlinweather.domain.model.ForecastList
-import com.bignerdranch.android.kotlinweather.ui.utils.ctx
+import com.bignerdranch.android.kotlinweather.extensions.ctx
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_forecast.view.*
-import org.jetbrains.anko.find
+import java.text.DateFormat
+import java.util.*
 
 /**
  * Created by Administrator on 2017/10/7/007.
@@ -39,12 +38,17 @@ class ForecastListAdapter(private val weekForecast: ForecastList,val itemClick: 
         fun bindForecast(forecast: Forecast) {
             with(forecast) {            //可以直接使用里面的东西
                 Picasso.with(itemView.ctx).load(iconUrl).into(itemView.icon)
-                itemView.date.text = date
+                itemView.date.text = convertDate(date)
                 itemView.description.text = description
                 itemView.maxTemperature.text = high.toString()
                 itemView.minTemperature.text = low.toString()
                 itemView.setOnClickListener { itemClick(this) }
             }
+        }
+
+        private fun convertDate(date: Long): String {
+            val df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())
+            return df.format(date)
         }
     }
 
