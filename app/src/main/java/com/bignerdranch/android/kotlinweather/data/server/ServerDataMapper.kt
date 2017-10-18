@@ -1,22 +1,30 @@
 package com.bignerdranch.android.kotlinweather.data.server
 
+import android.util.Log
 import com.bignerdranch.android.kotlinweather.domain.model.ForecastList
 import com.bignerdranch.android.kotlinweather.domain.model.Forecast as ModelForecast
 import java.text.DateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Administrator on 2017/10/7/007.
  */
 //把源数据转换成需要的数据
-class ForecastDataMapper {
+class ServerDataMapper {
     //返回需要的数据
-    fun convertFromDataModel(zipCode: Long, forecast: ForecastResult): ForecastList
+    fun convertToDomain(zipCode: Long, forecast: ForecastResult): ForecastList
             = ForecastList(zipCode, forecast.city.name, forecast.city.country, convertForecastListToDomain(forecast.list))
 
     //传入源list返回转换list
-    private fun convertForecastListToDomain(list: List<Forecast>): List<ModelForecast>
-            = list.map { convertForecastItemToDomain(it) } // 返回list
+    private fun convertForecastListToDomain(list: List<Forecast>): List<ModelForecast> {
+        return list.mapIndexed { i, forecast ->
+            //系统时间
+            val dt = Calendar.getInstance().timeInMillis + TimeUnit.DAYS.toMillis(i.toLong())
+            Log.i("time: dt", "$dt")
+            convertForecastItemToDomain(forecast.copy(dt = dt))
+        }
+    } // 返回list
 
     //传入源数据Forecast 返回设置好需要的数据
     private fun convertForecastItemToDomain(forecast: Forecast) : ModelForecast = with(forecast) {

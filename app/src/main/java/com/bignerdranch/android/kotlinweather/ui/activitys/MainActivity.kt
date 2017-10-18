@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
             val result = RequestForecastCommand(94043).execute()
             uiThread {
                 forecastList.adapter = ForecastListAdapter(result){ toast(it.description) }
-
             }
         }
      }

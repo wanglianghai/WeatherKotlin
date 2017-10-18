@@ -1,5 +1,6 @@
 package com.bignerdranch.android.kotlinweather.data.db
 
+import com.bignerdranch.android.kotlinweather.domain.dataSource.ForecastDataSource
 import com.bignerdranch.android.kotlinweather.domain.model.ForecastList
 import com.bignerdranch.android.kotlinweather.extensions.clear
 import com.bignerdranch.android.kotlinweather.extensions.parseList
@@ -11,13 +12,16 @@ import org.jetbrains.anko.db.select
 /**
  * Created by Administrator on 2017/10/16/016.
  */
+//数据库查询和保存
 class ForecastDb(private val forecastDbHelper: ForecastDbHelper = ForecastDbHelper.instance,
-                 private val dataMapper: DbDataMapper = DbDataMapper()) {
-    fun requestForecastFromByZipCode(zipCode: Long, date: Long) = forecastDbHelper.use {
+                 private val dataMapper: DbDataMapper = DbDataMapper()) : ForecastDataSource {
+    //库取结果
+    override fun requestForecastByZipCode(zipCode: Long, date: Long) = forecastDbHelper.use {
         val dailyRequest = "${DayForecastTable.CITY_ID} = ? AND ${DayForecastTable.DATE} >= ?"
         val dailyForecast = select(DayForecastTable.NAME).
                 whereSimple(dailyRequest, zipCode.toString(), date.toString()).
                 parseList{DayForecast(HashMap(it))}
+
         val city = select(CityForecastTable.NAME).
                 whereSimple("${CityForecastTable.ID} = ?", zipCode.toString())
                 .parseOpt{CityForecast(HashMap(it), dailyForecast)}
@@ -25,6 +29,7 @@ class ForecastDb(private val forecastDbHelper: ForecastDbHelper = ForecastDbHelp
         if (city != null) dataMapper.convertFromToDomain(city) else null
     }
 
+    //库存结果
     fun saveForecast(forecast: ForecastList) = forecastDbHelper.use {
         clear(DayForecastTable.NAME)
         clear(CityForecastTable.NAME)
