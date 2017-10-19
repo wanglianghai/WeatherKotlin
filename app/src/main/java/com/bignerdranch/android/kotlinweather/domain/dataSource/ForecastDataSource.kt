@@ -1,5 +1,6 @@
 package com.bignerdranch.android.kotlinweather.domain.dataSource
 
+import com.bignerdranch.android.kotlinweather.domain.model.Forecast
 import com.bignerdranch.android.kotlinweather.domain.model.ForecastList
 
 /**
@@ -10,4 +11,5 @@ import com.bignerdranch.android.kotlinweather.domain.model.ForecastList
 //一周的天气预报。
 interface ForecastDataSource {
     fun requestForecastByZipCode(zipCode: Long, date: Long): ForecastList?
+    fun requestDayForecast(id: Long) : Forecast?
 }

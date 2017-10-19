@@ -8,6 +8,8 @@
     tools:context="com.bignerdranch.android.kotlinweather.ui.activitys.MainActivity"
     android:orientation="vertical">
 
+    <include layout="@layout/toolbar"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/forecastList"
         android:layout_width="match_parent"

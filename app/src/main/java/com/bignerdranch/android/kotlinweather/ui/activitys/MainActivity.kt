@@ -7,7 +7,9 @@ import com.bignerdranch.android.kotlinweather.ui.adapters.ForecastListAdapter
 import com.bignerdranch.android.kotlinweather.R
 import com.bignerdranch.android.kotlinweather.domain.Command.RequestForecastCommand
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.async
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 
@@ -32,7 +34,12 @@ class MainActivity : AppCompatActivity() {
         async {
             val result = RequestForecastCommand(94043).execute()
             uiThread {
-                forecastList.adapter = ForecastListAdapter(result){ toast(it.description) }
+                forecastList.adapter = ForecastListAdapter(result){
+                    startActivity<DetailActivity>(DetailActivity.ID to it.id,
+                            DetailActivity.CITY_NAME to result.city)
+                }
+
+                toolbar.title = "${result.city}(${result.country})"
             }
         }
      }

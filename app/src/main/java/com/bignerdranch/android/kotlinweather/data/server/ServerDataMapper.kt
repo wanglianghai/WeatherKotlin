@@ -18,7 +18,7 @@ class ServerDataMapper {
 
     //传入源list返回转换list
     private fun convertForecastListToDomain(list: List<Forecast>): List<ModelForecast> {
-        return list.mapIndexed { i, forecast ->
+        return list.mapIndexed { i, forecast ->    //传两个参数
             //系统时间
             val dt = Calendar.getInstance().timeInMillis + TimeUnit.DAYS.toMillis(i.toLong())
             Log.i("time: dt", "$dt")
@@ -28,7 +28,7 @@ class ServerDataMapper {
 
     //传入源数据Forecast 返回设置好需要的数据
     private fun convertForecastItemToDomain(forecast: Forecast) : ModelForecast = with(forecast) {
-        ModelForecast(dt, weather[0].description, temp.max.toInt(), temp.min.toInt(),
+        ModelForecast(-1, dt, weather[0].description, temp.max.toInt(), temp.min.toInt(),
                 generateIconUrl(weather[0].icon))
     }
     //传入时间Long返回需要的日期格式

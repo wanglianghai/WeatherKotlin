@@ -3,6 +3,7 @@ package com.bignerdranch.android.kotlinweather.data.server
 import com.bignerdranch.android.kotlinweather.data.db.ForecastDb
 import com.bignerdranch.android.kotlinweather.domain.dataSource.ForecastDataSource
 import com.bignerdranch.android.kotlinweather.domain.dataSource.ForecastProvider
+import com.bignerdranch.android.kotlinweather.domain.model.Forecast
 import com.bignerdranch.android.kotlinweather.domain.model.ForecastList
 
 /**
@@ -11,6 +12,8 @@ import com.bignerdranch.android.kotlinweather.domain.model.ForecastList
 //网络服务
 class ForecastServer(private val serverDataMapper: ServerDataMapper = ServerDataMapper(),
                      private val forecastDb: ForecastDb = ForecastDb()) : ForecastDataSource {
+    override fun requestDayForecast(id: Long): Forecast? = throw UnsupportedOperationException()
+
     //它在从服务端接收到数据之后就会使用 ForecastDb 去保存到数据库,在取出
     override fun requestForecastByZipCode(zipCode: Long, date: Long): ForecastList? {
         val result = ForecastByZipCodeRequest(zipCode).execute()

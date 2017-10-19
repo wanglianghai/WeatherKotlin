@@ -17,7 +17,7 @@ class CityForecast(val map: MutableMap<String, Any?>, val dailyForecast : List<D
 }
 
 class DayForecast(var map: MutableMap<String, Any?>) {
-    var _id: Long by map
+    var _id: Long by map        //自动增加，主键
     var date: Long by map
     var description: String by map
     var high: Int by map
